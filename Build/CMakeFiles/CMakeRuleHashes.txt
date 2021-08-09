@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+d4b8a27b262ddc78883a1e008a6f67e8 ../newOopsApp_en_DE.ts
+4cd7adc55f35f3e64a9530e59d490e67 CMakeFiles/newOopsApp_autogen

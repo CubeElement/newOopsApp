@@ -1,0 +1,4 @@
+/home/hamstervillage/Hamster_projects/newOopsApp/Build/CMakeFiles/rebuild_cache.dir
+/home/hamstervillage/Hamster_projects/newOopsApp/Build/CMakeFiles/edit_cache.dir
+/home/hamstervillage/Hamster_projects/newOopsApp/Build/CMakeFiles/newOopsApp.dir
+/home/hamstervillage/Hamster_projects/newOopsApp/Build/CMakeFiles/newOopsApp_autogen.dir
