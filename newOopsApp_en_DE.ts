@@ -5,8 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="mainwindow.ui" line="14"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="50"/>
-        <location filename="newOopsApp_autogen/include/ui_mainwindow.h" line="50"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="72"/>
         <source>MainWindow</source>
         <translation type="unfinished"></translation>
     </message>

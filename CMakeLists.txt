@@ -69,3 +69,6 @@ set_target_properties(newOopsApp PROPERTIES
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(newOopsApp)
 endif()
+
+
+include_directories(${CMAKE_HOME_DIRECTORY}/lib/)
