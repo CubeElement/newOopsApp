@@ -11,6 +11,7 @@
 #include <QSizePolicy>
 #include <QMap>
 #include <QDebug>
+#include <QHashIterator>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->setCurrentIndex(0);
     m_num_available_newsp = 5;
     m_newsp_units = { "NT", "SD", "DW", "HER", "BUI"};
-    //QHash<QObject*, QObject*> m_newsp_missing_hash;
 }
 
 MainWindow::~MainWindow()
@@ -71,18 +71,23 @@ void MainWindow::on_button_option_proceed_clicked()
     if ( ui->radio_address->isChecked() )
     {
         ui->stackedWidget->setCurrentIndex(2);
-        this->get_missing_newsp();
-        qDebug() << this->get_missing_newsp().size();
+        ui->page_2_list_newsp->clear();
+        QHashIterator<QLabel*, QSpinBox*> iter(this->m_newsp_missing_hash);
+        while (iter.hasNext()) {
+            iter.next();
+            QLabel* key = iter.key();
+            QSpinBox* value = iter.value();
+            ui->page_2_list_newsp->addItem(QString((*key).text()) + ", " +
+                                           QString::number((*value).value()));
+            //qDebug() << "Object text info: " << (*key).text() << Qt::endl;
+            //qDebug() << iter.key() << iter.value() << Qt::endl;
+        }
+        ui->page_2_list_newsp->sortItems(Qt::AscendingOrder);
 
     } else if ( ui->radio_delivery->isChecked() )
     {
         ui->stackedWidget->setCurrentIndex(3);
     }
-}
-
-QHash <QObject*, QObject*> MainWindow::get_missing_newsp()
-{
-    return this->m_newsp_missing_hash;
 }
 
 void MainWindow::on_button_back_from_p2d_clicked()

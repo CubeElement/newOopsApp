@@ -288,7 +288,7 @@
            <height>175</height>
           </rect>
          </property>
-         <widget class="QListWidget" name="list_newsp">
+         <widget class="QListWidget" name="page_2_list_newsp">
           <property name="geometry">
            <rect>
             <x>0</x>

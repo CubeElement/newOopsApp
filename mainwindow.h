@@ -5,6 +5,8 @@
 #include <array>
 #include <QMainWindow>
 #include <QObject>
+#include <QLabel>
+#include <QSpinBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,15 +34,14 @@ private:
     Ui::MainWindow *ui;
 
 private:
-    static constexpr int N = 15; //  maximum of newspapers to be missed
-    void set_staff_id();
-    int m_num_available_newsp;
-    int m_staff_id;
 
+    void set_staff_id();
+    int m_staff_id;
+public:
+    int m_num_available_newsp;
     void make_newsp_list(int n);
     std::vector<std::string> m_newsp_units;
-    QHash<QObject*, QObject*> m_newsp_missing_hash;
-    QHash<QObject*, QObject*> get_missing_newsp();
+    QHash<QLabel*, QSpinBox*> m_newsp_missing_hash;
 
 };
 #endif // MAINWINDOW_H
