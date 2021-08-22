@@ -7,11 +7,13 @@
 
 #include <QSpinBox>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QSpacerItem>
 #include <QSizePolicy>
 #include <QMap>
 #include <QDebug>
 #include <QHashIterator>
+#include <QGroupBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -87,6 +89,36 @@ void MainWindow::on_button_option_proceed_clicked()
     } else if ( ui->radio_delivery->isChecked() )
     {
         ui->stackedWidget->setCurrentIndex(3);
+        QLayoutItem *child;
+        while ((child = ui->layout_newsp_addresses->takeAt(0)) != 0) {
+            delete child->widget();
+            delete child;
+        }
+        QHashIterator<QLabel*, QSpinBox*> iter(this->m_newsp_missing_hash);
+        while (iter.hasNext())
+        {
+            iter.next();
+            QLabel* key = iter.key();
+            QSpinBox* value = iter.value();
+
+            if ((*value).value() != 0)
+            {
+                QGroupBox* groupbox = new QGroupBox(ui->scroll_newsp_addresses);
+
+                groupbox->setTitle((*key).text());
+                ui->layout_newsp_addresses->addWidget(groupbox);
+                QVBoxLayout* vlayout = new QVBoxLayout();
+                for ( int j = 0 ; j < (*value).value() ; j++ )
+                {
+                    QLineEdit* address = new QLineEdit(groupbox);
+                    vlayout->addWidget(address);
+                    address->setPlaceholderText("Addr. #" + QString::number(j));
+                };
+                ui->layout_newsp_addresses->addLayout(vlayout);
+                vlayout = nullptr;
+                delete vlayout;
+            }
+        } //  while newsp iterator.next()
     }
 }
 
@@ -101,9 +133,4 @@ void MainWindow::on_button_back_from_p2s_clicked()
     ui->stackedWidget->setCurrentIndex(1);
 }
 
-
-void MainWindow::on_button_back_to_main_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(0);
-}
 

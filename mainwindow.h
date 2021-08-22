@@ -28,8 +28,6 @@ private slots:
 
     void on_button_back_from_p2s_clicked();
 
-    void on_button_back_to_main_clicked();
-
 private:
     Ui::MainWindow *ui;
 
