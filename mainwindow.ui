@@ -300,6 +300,19 @@
          <string>Back</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="sendButton_support">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>330</y>
+          <width>88</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="page_2_address">
        <widget class="QLabel" name="page_2_address_annotation">
@@ -380,7 +393,7 @@
          </layout>
         </widget>
        </widget>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="sendButton_address">
         <property name="geometry">
          <rect>
           <x>180</x>
