@@ -32,16 +32,29 @@ private:
     void set_staff_id();
     int m_staff_id;
 
-public:
     int m_num_available_newsp;
     void make_newsp_list(int n);
     std::vector<std::string> m_newsp_units;
     QHash<QLabel*, QSpinBox*> m_newsp_missing_hash;
-    void m_add_result(std::string, std::string);
     void m_map_result();
-    std::map <std::string, std::list<std::string>> m_results_table;
     void m_send_results();
-    void m_get_data_for_support();
+    inline QString* getCourierAddress();
 
+    /* output datastructures: id, count, list(address) */
+    std::map <std::string, int> m_newspIdOutput;
+    std::map <int, int> m_newspCountOutput;
+    std::map <int, std::list<QString*>> m_newspAddrOutput;
+
+    inline void add_NewspIdOutput(std::string newsp_name, int id);
+    inline int get_NewspIdOutput(std::string newsp_name);
+
+    inline void add_NewspCountOutput(int id, int count);
+    inline int get_NewspCountOutput(int id);
+
+    inline void add_NewspAddrOutput(int id, QString*);
+    inline std::list<QString*> get_NewspAddrOutput(int id);
+
+    inline void clearOutput();
 };
+
 #endif // MAINWINDOW_H
