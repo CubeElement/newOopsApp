@@ -31,32 +31,32 @@ private:
 
 private:
     void moveToSelectorPage();
-    void set_staff_id();
-    int m_staff_id;
+    void setStaffId();
+    int m_StaffId;
 
     int m_num_available_newsp;
-    void make_newsp_list(int n);
+    void createSelectorList(int n);
     std::vector<std::string> m_newsp_units;
-    QHash<QLabel*, QSpinBox*> m_newsp_missing_hash;
-    void m_map_result();
-    void m_send_results();
+    QHash<QLabel*, QSpinBox*> m_NewspMissingHash;
+    void showReport();
+    void sendReport();
     inline QString* getCourierAddress();
 
     /* output datastructures: id, count, list(address) */
-    std::map <std::string, int> m_newspIdOutput;
-    std::map <int, int> m_newspCountOutput;
-    std::map <int, std::list<QLineEdit*>> m_newspAddrOutput;
+    std::map <std::string, int> m_ReportNewsp;
+    std::map <int, int> m_ReportCounters;
+    std::map <int, std::list<QLineEdit*>> m_ReportAddresses;
 
-    inline void add_NewspIdOutput(std::string newsp_name, int id);
-    inline int get_NewspIdOutput(std::string newsp_name);
+    inline void addNewsp(std::string newsp_name, int id);
+    inline int getNewspId(std::string newsp_name);
 
-    inline void add_NewspCountOutput(int id, int count);
-    inline int get_NewspCountOutput(int id);
+    inline void addNewspCounter(int id, int count);
+    inline int getNewspCounter(int id);
 
-    inline void add_NewspAddrOutput(int id, QLineEdit*);
-    inline std::list<QLineEdit*> get_NewspAddrOutput(int id);
+    inline void addNewspAddr(int id, QLineEdit*);
+    inline std::list<QLineEdit*> getNewspAddr(int id);
 
-    inline void clearOutput();
+    inline void clearReportData();
 
     DatabaseJSON db;
 };

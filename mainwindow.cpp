@@ -30,9 +30,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->button_back_from_p2s, &QPushButton::clicked,
             this, &MainWindow::moveToSelectorPage);
     connect(ui->sendButton_address, &QPushButton::clicked,
-            this, &MainWindow::m_send_results);
+            this, &MainWindow::sendReport);
     connect(ui->sendButton_support, &QPushButton::clicked,
-            this, &MainWindow::m_send_results);
+            this, &MainWindow::sendReport);
 
 };
 
@@ -41,11 +41,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::set_staff_id()
+void MainWindow::setStaffId()
 {
     QString staff_id;
     staff_id = ui->line_staff_id->text();
-    this->m_staff_id = staff_id.toInt();
+    this->m_StaffId = staff_id.toInt();
 }
 
 void MainWindow::moveToSelectorPage()
@@ -55,13 +55,14 @@ void MainWindow::moveToSelectorPage()
 
 void MainWindow::on_button_signin_clicked()
 {
-    set_staff_id();
+    setStaffId();
     ui->stackedWidget->setCurrentIndex(1);
-    ui->label_staff_id->setText(QString("Hello, ") + QString::number(this->m_staff_id));
-    make_newsp_list(this->m_num_available_newsp);
+    ui->label_staff_id->setText(QString("Hello, ") +
+                                QString::number(this->m_StaffId));
+    createSelectorList(this->m_num_available_newsp);
 }
 
-void MainWindow::make_newsp_list(int n)
+void MainWindow::createSelectorList(int n)
 {
     for ( int i = 0; i < n; i++ )
     {
@@ -72,7 +73,7 @@ void MainWindow::make_newsp_list(int n)
         QSpinBox* newsp_count = new QSpinBox(ui->page_1);
         newsp_name->setText( QString::fromStdString( this->m_newsp_units[i]) );
         newsp_count->setValue(0);
-        this->m_newsp_missing_hash[newsp_name] = newsp_count;
+        this->m_NewspMissingHash[newsp_name] = newsp_count;
 
         p_layout->addWidget(newsp_name);
         p_layout->addWidget(newsp_count);
@@ -86,15 +87,15 @@ void MainWindow::make_newsp_list(int n)
 
 void MainWindow::on_button_option_proceed_clicked()
 {
-    this->clearOutput();
-    int id = 0;
+    this->clearReportData();
+    int id = 0; // track id of newspaper to add into a report data
 
     if ( ui->radio_address->isChecked() )
     {
         ui->stackedWidget->setCurrentIndex(2);
 
         ui->page_2_list_newsp->clear();
-        QHashIterator<QLabel*, QSpinBox*> iter(this->m_newsp_missing_hash);
+        QHashIterator<QLabel*, QSpinBox*> iter(this->m_NewspMissingHash);
         while (iter.hasNext()) {
             iter.next();
             QLabel* key = iter.key();
@@ -104,9 +105,9 @@ void MainWindow::on_button_option_proceed_clicked()
             {
                 ui->page_2_list_newsp->addItem(QString((*key).text()) + ", " +
                                                QString::number((*value).value()));
-                /* filling an output table */
-                this->add_NewspIdOutput(((*key).text()).toStdString(), id);
-                this->add_NewspCountOutput(id, (*value).text().toInt());
+                /* adding data to report */
+                this->addNewsp(((*key).text()).toStdString(), id);
+                this->addNewspCounter(id, (*value).text().toInt());
                 id++;
             }
         }
@@ -120,7 +121,7 @@ void MainWindow::on_button_option_proceed_clicked()
             delete child->widget();
             delete child;
         }
-        QHashIterator<QLabel*, QSpinBox*> iter(this->m_newsp_missing_hash);
+        QHashIterator<QLabel*, QSpinBox*> iter(this->m_NewspMissingHash);
         while (iter.hasNext())
         {
             iter.next();
@@ -130,8 +131,8 @@ void MainWindow::on_button_option_proceed_clicked()
 
             if ((*value).value() != 0)
             {
-                this->add_NewspIdOutput(((*key).text()).toStdString(), id);
-                this->add_NewspCountOutput(id, (*value).text().toInt());
+                this->addNewsp(((*key).text()).toStdString(), id);
+                this->addNewspCounter(id, (*value).text().toInt());
                 id++;
 
                 QLabel* title = new QLabel();
@@ -142,25 +143,28 @@ void MainWindow::on_button_option_proceed_clicked()
                     QLineEdit* address = new QLineEdit();
 
                     address->setPlaceholderText("Addr. # " + QString::number(j));
+                    // autofilling addresses to demonstrate
                     address->setText("Addr. # " + QString::number(j));
                     ui->layout_newsp_addresses->addWidget(address);
 
                     /* filling an output table */
-                    this->add_NewspAddrOutput(this->get_NewspIdOutput(((*key).text()).toStdString()), address);
+                    this->addNewspAddr(
+                                this->getNewspId(((*key).text()).toStdString()),
+                                address);
                 }
             } //  if end
         } //  while end
     } //  else end
 }
 
-void MainWindow::m_send_results()
+void MainWindow::sendReport()
 {
-    this->m_map_result();
+    this->showReport();
     ui->stackedWidget->setCurrentIndex(4);
 
 }
 
-void MainWindow::m_map_result()
+void MainWindow::showReport()
 {
 
     QLabel* shipping_address_annotation = new QLabel();
@@ -174,11 +178,11 @@ void MainWindow::m_map_result()
         courier_addr->setText(QString("Courier's address: ") + address_from_user);
     }
     std::map <std::string, int>::iterator it;
-    for ( it = this->m_newspIdOutput.begin(); it != this->m_newspIdOutput.end(); it++ )
+    for ( it = this->m_ReportNewsp.begin(); it != this->m_ReportNewsp.end(); it++ )
     {
         if (sender() == ui->sendButton_address)
         {
-            std::list <QLineEdit*> get_address = (this->get_NewspAddrOutput(it->second));
+            std::list <QLineEdit*> get_address = (this->getNewspAddr(it->second));
             std::list <QLineEdit*>::iterator iter;
             for (iter = get_address.begin(); iter != get_address.end(); iter++)
             {
@@ -197,7 +201,7 @@ void MainWindow::m_map_result()
             QLabel* newsp = new QLabel();
             QLabel* np_count = new QLabel();
             newsp->setText(QString::fromStdString(it->first));
-            np_count->setText(QString::number(this->get_NewspCountOutput(it->second))
+            np_count->setText(QString::number(this->getNewspCounter(it->second))
                               + " pcs.");
             hlayout->addWidget(newsp);
             hlayout->addWidget(np_count);
@@ -212,15 +216,15 @@ inline QString* MainWindow::getCourierAddress()
     return address;
 }
 
-inline void MainWindow::add_NewspIdOutput(std::string newsp_name, int id)
+inline void MainWindow::addNewsp(std::string newsp_name, int id)
 {
-    this->m_newspIdOutput.insert(std::pair<std::string, int> (newsp_name, id));
+    this->m_ReportNewsp.insert(std::pair<std::string, int> (newsp_name, id));
 }
 
-inline int MainWindow::get_NewspIdOutput(std::string newsp_name)
+inline int MainWindow::getNewspId(std::string newsp_name)
 {
-    std::map<std::string, int>::iterator pos = this->m_newspIdOutput.find(newsp_name);
-    if (pos == this->m_newspIdOutput.end()) {
+    std::map<std::string, int>::iterator pos = this->m_ReportNewsp.find(newsp_name);
+    if (pos == this->m_ReportNewsp.end()) {
         throw std::string("There is no newspaper in the list found!");
     } else {
         int value = pos->second;
@@ -228,20 +232,20 @@ inline int MainWindow::get_NewspIdOutput(std::string newsp_name)
     }
 }
 
-inline void MainWindow::add_NewspCountOutput(int id, int count)
+inline void MainWindow::addNewspCounter(int id, int count)
 {
-    this->m_newspCountOutput.insert(std::pair<int, int> (id, count));
+    this->m_ReportCounters.insert(std::pair<int, int> (id, count));
 }
 
-inline int MainWindow::get_NewspCountOutput(int id)
+inline int MainWindow::getNewspCounter(int id)
 {
-    return this->m_newspCountOutput[id];
+    return this->m_ReportCounters[id];
 }
 
-inline void MainWindow::add_NewspAddrOutput(int id, QLineEdit* address)
+inline void MainWindow::addNewspAddr(int id, QLineEdit* address)
 {
-    std::map <int, std::list<QLineEdit*>>& table = this->m_newspAddrOutput;
-        if ( this->m_newspAddrOutput.find(id) == this->m_newspAddrOutput.end())
+    std::map <int, std::list<QLineEdit*>>& table = this->m_ReportAddresses;
+        if ( this->m_ReportAddresses.find(id) == this->m_ReportAddresses.end())
         {
             std::list<QLineEdit*> addr_list;
             addr_list.push_back(address);
@@ -256,14 +260,14 @@ inline void MainWindow::add_NewspAddrOutput(int id, QLineEdit* address)
         }
 }
 
-inline std::list<QLineEdit*> MainWindow::get_NewspAddrOutput(int id)
+inline std::list<QLineEdit*> MainWindow::getNewspAddr(int id)
 {
-    return this->m_newspAddrOutput[id];
+    return this->m_ReportAddresses[id];
 }
 
-inline void MainWindow::clearOutput()
+inline void MainWindow::clearReportData()
 {
-    this->m_newspIdOutput.clear();
-    this->m_newspCountOutput.clear();
-    this->m_newspAddrOutput.clear();
+    this->m_ReportNewsp.clear();
+    this->m_ReportCounters.clear();
+    this->m_ReportAddresses.clear();
 }
