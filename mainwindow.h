@@ -43,7 +43,7 @@ private:
     /* output datastructures: id, count, list(address) */
     std::map <std::string, int> m_newspIdOutput;
     std::map <int, int> m_newspCountOutput;
-    std::map <int, std::list<QString*>> m_newspAddrOutput;
+    std::map <int, std::list<QLineEdit*>> m_newspAddrOutput;
 
     inline void add_NewspIdOutput(std::string newsp_name, int id);
     inline int get_NewspIdOutput(std::string newsp_name);
@@ -51,8 +51,8 @@ private:
     inline void add_NewspCountOutput(int id, int count);
     inline int get_NewspCountOutput(int id);
 
-    inline void add_NewspAddrOutput(int id, QString*);
-    inline std::list<QString*> get_NewspAddrOutput(int id);
+    inline void add_NewspAddrOutput(int id, QLineEdit*);
+    inline std::list<QLineEdit*> get_NewspAddrOutput(int id);
 
     inline void clearOutput();
 };

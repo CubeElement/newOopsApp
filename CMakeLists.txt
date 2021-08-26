@@ -72,3 +72,9 @@ endif()
 
 
 include_directories(${CMAKE_HOME_DIRECTORY}/lib/)
+# nlohmann_json #
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+add_subdirectory( lib/nlohmann_json )
+target_link_libraries( newOopsApp PRIVATE nlohmann_json )
+
+include_directories(${CMAKE_SOURCE_DIR}/database/)

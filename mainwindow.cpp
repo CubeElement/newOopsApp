@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-//#include "nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 #include <iostream>
 #include <vector>
 
@@ -16,6 +16,10 @@
 #include <QGroupBox>
 #include <QObject>
 #include <stdexcept>
+#include <fstream>
+
+using json = nlohmann::json;
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,7 +37,6 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::m_send_results);
     connect(ui->sendButton_support, &QPushButton::clicked,
             this, &MainWindow::m_send_results);
-
 };
 
 MainWindow::~MainWindow()
@@ -78,7 +81,9 @@ void MainWindow::make_newsp_list(int n)
         p_layout->addWidget(newsp_count);
         ui->layout_page1->addLayout(p_layout);
     }
-    QSpacerItem* spacer = new QSpacerItem(100, 100, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    QSpacerItem* spacer = new QSpacerItem(100, 100,
+                                          QSizePolicy::Expanding,
+                                          QSizePolicy::Expanding);
     ui->layout_page1->addSpacerItem(spacer);
 }
 
@@ -144,15 +149,11 @@ void MainWindow::on_button_option_proceed_clicked()
                     ui->layout_newsp_addresses->addWidget(address);
 
                     /* filling an output table */
-                    QString* address_str = new QString(address->text());
-                    std::list<QString*> address_list;
-                    std::cout << address_str << std::endl;
-                    this->add_NewspAddrOutput(this->get_NewspIdOutput(((*key).text()).toStdString()), address_str);
-
-                };
-            }
+                    this->add_NewspAddrOutput(this->get_NewspIdOutput(((*key).text()).toStdString()), address);
+                }
+            } //  if end
         } //  while end
-    }
+    } //  else end
 }
 
 void MainWindow::m_send_results()
@@ -180,15 +181,15 @@ void MainWindow::m_map_result()
     {
         if (sender() == ui->sendButton_address)
         {
-            std::list <QString*> get_address = (this->get_NewspAddrOutput(it->second));
-            std::list <QString*>::iterator iter;
+            std::list <QLineEdit*> get_address = (this->get_NewspAddrOutput(it->second));
+            std::list <QLineEdit*>::iterator iter;
             for (iter = get_address.begin(); iter != get_address.end(); iter++)
             {
                 QHBoxLayout* hlayout = new QHBoxLayout();
                 QLabel* newsp = new QLabel();
                 QLabel* addr = new QLabel();
                 newsp->setText(QString::fromStdString(it->first));
-                addr->setText(QString::fromStdString((*iter)->toStdString()));
+                addr->setText(QString((*iter)->text()));
                 hlayout->addWidget(newsp);
                 hlayout->addWidget(addr);
                 ui->vlayout_report->addLayout(hlayout);
@@ -240,25 +241,25 @@ inline int MainWindow::get_NewspCountOutput(int id)
     return this->m_newspCountOutput[id];
 }
 
-inline void MainWindow::add_NewspAddrOutput(int id, QString* address)
+inline void MainWindow::add_NewspAddrOutput(int id, QLineEdit* address)
 {
-    std::map <int, std::list<QString*>>& table = this->m_newspAddrOutput;
+    std::map <int, std::list<QLineEdit*>>& table = this->m_newspAddrOutput;
         if ( this->m_newspAddrOutput.find(id) == this->m_newspAddrOutput.end())
         {
-            std::list<QString*> addr_list;
+            std::list<QLineEdit*> addr_list;
             addr_list.push_back(address);
             table[id] = addr_list;
         }
         else
         {
-            std::list<QString*> addr_to_push;
+            std::list<QLineEdit*> addr_to_push;
             addr_to_push = table[id];
             addr_to_push.push_back(address);
             table[id] = addr_to_push;
         }
 }
 
-inline std::list<QString*> MainWindow::get_NewspAddrOutput(int id)
+inline std::list<QLineEdit*> MainWindow::get_NewspAddrOutput(int id)
 {
     return this->m_newspAddrOutput[id];
 }
