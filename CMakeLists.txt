@@ -34,6 +34,7 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        databasejson.h databasejson.cpp
         ${TS_FILES}
 )
 
@@ -77,4 +78,4 @@ set(JSON_BuildTests OFF CACHE INTERNAL "")
 add_subdirectory( lib/nlohmann_json )
 target_link_libraries( newOopsApp PRIVATE nlohmann_json )
 
-include_directories(${CMAKE_SOURCE_DIR}/database/)
+file(COPY database/database.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/database/)

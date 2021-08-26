@@ -1,20 +1,20 @@
 {
-    "Zusteller":[{"1":[{
+    "Zusteller":{"1001":{
         "Name":"LS",
         "Mob":"015446549898",
         "Bezirk":"10305",
         "Abladestelle":"Starstrasse, 100, Haustuer",
         "Datum":"01.01.2020"
-                }],
-                "2":[{
+                },
+                "1052":{
         "Name":"KD",
         "Mob":"015441111111",
         "Bezirk":"11305",
         "Abladestelle":"Hochstrasse, 100, Haustuer",
         "Datum":"01.01.2020"
-                }]}],
+                }},
     
-    "BezNummer": [
+    "BezNummer": 
     {"10305":[
         {
             "PLZ": "92637",
@@ -440,5 +440,4 @@
         }
     ]
     }
-    ]
 }

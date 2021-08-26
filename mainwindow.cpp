@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-#include "nlohmann/json.hpp"
 #include <iostream>
 #include <vector>
 
@@ -16,9 +15,6 @@
 #include <QGroupBox>
 #include <QObject>
 #include <stdexcept>
-#include <fstream>
-
-using json = nlohmann::json;
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -37,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::m_send_results);
     connect(ui->sendButton_support, &QPushButton::clicked,
             this, &MainWindow::m_send_results);
+
 };
 
 MainWindow::~MainWindow()
@@ -105,12 +102,12 @@ void MainWindow::on_button_option_proceed_clicked()
 
             if ((*value).value() != 0)
             {
-            ui->page_2_list_newsp->addItem(QString((*key).text()) + ", " +
-                                           QString::number((*value).value()));
-            /* filling an output table */
-            this->add_NewspIdOutput(((*key).text()).toStdString(), id);
-            this->add_NewspCountOutput(id, (*value).value());
-            id++;
+                ui->page_2_list_newsp->addItem(QString((*key).text()) + ", " +
+                                               QString::number((*value).value()));
+                /* filling an output table */
+                this->add_NewspIdOutput(((*key).text()).toStdString(), id);
+                this->add_NewspCountOutput(id, (*value).text().toInt());
+                id++;
             }
         }
         ui->page_2_list_newsp->sortItems(Qt::AscendingOrder);
@@ -134,7 +131,7 @@ void MainWindow::on_button_option_proceed_clicked()
             if ((*value).value() != 0)
             {
                 this->add_NewspIdOutput(((*key).text()).toStdString(), id);
-                this->add_NewspCountOutput(id, (*value).value());
+                this->add_NewspCountOutput(id, (*value).text().toInt());
                 id++;
 
                 QLabel* title = new QLabel();

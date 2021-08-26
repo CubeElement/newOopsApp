@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include  "databasejson.h"
+
 #include <iostream>
 #include <array>
 #include <QMainWindow>
@@ -55,6 +57,8 @@ private:
     inline std::list<QLineEdit*> get_NewspAddrOutput(int id);
 
     inline void clearOutput();
+
+    DatabaseJSON db;
 };
 
 #endif // MAINWINDOW_H
