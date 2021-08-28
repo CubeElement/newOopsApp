@@ -2,15 +2,32 @@
 #define DATABASEJSON_H
 
 #include "nlohmann/json.hpp"
+#include <QString>
+#include <QObject>
+#include <QThread>
 
 using json = nlohmann::json;
 
-class DatabaseJSON
+class DatabaseJSON : public QThread
 {
+
 public:
     DatabaseJSON();
 
-    void init();
+    void openJSON();
+    json m_JSON;
+
+    void getDistrictID();
+    int getStaffID();
+    int setStaffID();
+    bool checkUserData(QString& StaffID);
+    void printLoginData(nlohmann::json);
+
+public slots:
+
+
+private:
+    int m_StaffID;
 };
 
 #endif // DATABASEJSON_H

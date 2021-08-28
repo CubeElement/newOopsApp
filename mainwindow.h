@@ -23,7 +23,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_button_signin_clicked();
+    void onButtonSigninClicked(QString staff_id);
     void on_button_option_proceed_clicked();
 
 private:
@@ -31,11 +31,11 @@ private:
 
 private:
     void moveToSelectorPage();
-    void setStaffId();
-    int m_StaffId;
+    void createSelectorList(int n);
+    void createSingleAddressList();
+    void createMultipleAddressList();
 
     int m_num_available_newsp;
-    void createSelectorList(int n);
     std::vector<std::string> m_newsp_units;
     QHash<QLabel*, QSpinBox*> m_NewspMissingHash;
     void showReport();
@@ -48,16 +48,17 @@ private:
     std::map <int, std::list<QLineEdit*>> m_ReportAddresses;
 
     inline void addNewsp(std::string newsp_name, int id);
-    inline int getNewspId(std::string newsp_name);
+    inline int getNewspId(std::string newsp_name) const;
 
     inline void addNewspCounter(int id, int count);
-    inline int getNewspCounter(int id);
+    inline int getNewspCounter(int id) const;
 
     inline void addNewspAddr(int id, QLineEdit*);
-    inline std::list<QLineEdit*> getNewspAddr(int id);
+    inline std::list<QLineEdit*> getNewspAddr(int id) const;
 
     inline void clearReportData();
 
+private:
     DatabaseJSON db;
 };
 
