@@ -29,19 +29,17 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    DatabaseJSON db;
 
 private:
     void moveToSelectorPage();
-    void createSelectorList(std::set<std::string>);
+    void createSelectorList(const std::set<std::string>& units_list);
     void createSingleAddressList();
     void createMultipleAddressList();
-
-    int m_num_available_newsp;
-    std::vector<std::string> m_newsp_units;
-    QHash<QLabel*, QSpinBox*> m_NewspMissingHash;
     void showReport();
     void sendReport();
-    inline QString getCourierAddress();
+
+    QHash<QLabel*, QSpinBox*> m_NewspMissingHash;
 
     /* output datastructures: id, count, list(address) */
     std::map <std::string, int> m_ReportNewsp;
@@ -57,10 +55,11 @@ private:
     inline void addNewspAddr(int id, QLineEdit*);
     inline std::list<QLineEdit*> getNewspAddr(int id) const;
 
+    inline QString getCourierAddress();
+
     inline void clearReportData();
 
 private:
-    DatabaseJSON db;
 };
 
 #endif // MAINWINDOW_H

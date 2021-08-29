@@ -17,6 +17,7 @@
 #include <stdexcept>
 #include <iterator>
 #include <QCompleter>
+#include <QMessageBox>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -25,8 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
-    m_num_available_newsp = 5;
-    m_newsp_units = { "NT", "SD", "DW", "HER", "BUI"};
     connect(ui->button_back_from_p2d, &QPushButton::clicked,
             this, &MainWindow::moveToSelectorPage);
     connect(ui->button_back_from_p2s, &QPushButton::clicked,
@@ -38,8 +37,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->button_signin, &QPushButton::clicked,
             this,
             [=]() { MainWindow::onButtonSigninClicked(ui->line_staff_id->text()); });
-
-//    connect(0, 0, 0, 0);
 
 };
 
@@ -65,14 +62,19 @@ void MainWindow::onButtonSigninClicked(QString staff_id)
     } else
     {
         qDebug() << "Login failed" << "\n";
+        QMessageBox message;
+        message.setText("Wrong login!");
+        message.setIcon(QMessageBox::Warning);
+        message.setSizeIncrement(120, 40);
+        message.exec();
     }
 
 }
 
-void MainWindow::createSelectorList(std::set<std::string> newspapers_set)
+void MainWindow::createSelectorList(const std::set<std::string>& units_list)
 {
     std::set<std::string>::iterator it;
-    for ( it = newspapers_set.begin(); it != newspapers_set.end(); it++ )
+    for ( it = units_list.begin(); it != units_list.end(); it++ )
     {
         QHBoxLayout* p_layout = new QHBoxLayout();
         p_layout->setAlignment(ui->layout_page1, Qt::AlignCenter);
@@ -163,7 +165,7 @@ void MainWindow::createMultipleAddressList()
                 QLineEdit* address = new QLineEdit();
 
                 address->setPlaceholderText("Addr. # " + QString::number(j));
-                // autofilling addresses to demonstrate
+                // autofilling addresses to demonstration
 //                address->setText("Addr. # " + QString::number(j));
                 QStringList* addrlist = new QStringList(db.getSubscriberAddresses());
                 QCompleter* completer = new QCompleter(*addrlist, this);
