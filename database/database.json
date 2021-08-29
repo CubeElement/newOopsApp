@@ -1,17 +1,15 @@
 {
     "Zusteller":{"1001":{
-        "Name":"LS",
-        "Mob":"015446549898",
+        "Name":"Michael",
+        "Nachname":"T.",
         "Bezirk":"10305",
-        "Abladestelle":"Starstrasse, 100, Haustuer",
-        "Datum":"01.01.2020"
+        "Abladestelle":"Starstrasse, 100, Haustuer"
                 },
                 "1052":{
-        "Name":"KD",
-        "Mob":"015441111111",
+        "Name":"Kevin",
+        "Nachname":"G.",
         "Bezirk":"11305",
-        "Abladestelle":"Hochstrasse, 100, Haustuer",
-        "Datum":"01.01.2020"
+        "Abladestelle":"Hochstrasse, 100, Haustuer"
                 }},
     
     "BezNummer": 

@@ -5,10 +5,12 @@
 #include <QString>
 #include <QObject>
 #include <QThread>
+#include <vector>
+#include <set>
 
 using json = nlohmann::json;
 
-class DatabaseJSON : public QThread
+class DatabaseJSON : public QObject
 {
 
 public:
@@ -19,15 +21,24 @@ public:
 
     void getDistrictID();
     int getStaffID();
-    int setStaffID();
     bool checkUserData(QString& StaffID);
     void printLoginData(nlohmann::json);
+    void initCourierInfo(std::string StaffID);
+    std::string getCourierName();
+    std::string getCourierDistrict();
 
 public slots:
 
 
 private:
-    int m_StaffID;
+    std::string m_StaffID;
+    std::string m_name;
+    std::string m_lastname;
+    std::string m_courier_district;
+    std::string m_courier_address;
+    std::set<std::string> m_courier_newspapers;
+
+
 };
 
 #endif // DATABASEJSON_H

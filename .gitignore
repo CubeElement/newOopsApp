@@ -1,4 +1,5 @@
 Build/
+*.user
 
 *.swp
 # Editors

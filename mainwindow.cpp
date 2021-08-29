@@ -58,7 +58,7 @@ void MainWindow::onButtonSigninClicked(QString staff_id)
         qDebug() << "Login succesful" << "\n";
         ui->stackedWidget->setCurrentIndex(1);
         ui->label_staff_id->setText(QString("Hello, ") +
-                                    QString::number(5));
+                                    QString::fromStdString(db.getCourierName()));
         createSelectorList(this->m_num_available_newsp);
     } else
     {
