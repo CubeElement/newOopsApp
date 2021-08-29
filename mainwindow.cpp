@@ -15,6 +15,8 @@
 #include <QGroupBox>
 #include <QObject>
 #include <stdexcept>
+#include <iterator>
+#include <QCompleter>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -59,7 +61,7 @@ void MainWindow::onButtonSigninClicked(QString staff_id)
         ui->stackedWidget->setCurrentIndex(1);
         ui->label_staff_id->setText(QString("Hello, ") +
                                     QString::fromStdString(db.getCourierName()));
-        createSelectorList(this->m_num_available_newsp);
+        createSelectorList(db.getCourierNewspapers());
     } else
     {
         qDebug() << "Login failed" << "\n";
@@ -67,16 +69,17 @@ void MainWindow::onButtonSigninClicked(QString staff_id)
 
 }
 
-void MainWindow::createSelectorList(int n)
+void MainWindow::createSelectorList(std::set<std::string> newspapers_set)
 {
-    for ( int i = 0; i < n; i++ )
+    std::set<std::string>::iterator it;
+    for ( it = newspapers_set.begin(); it != newspapers_set.end(); it++ )
     {
         QHBoxLayout* p_layout = new QHBoxLayout();
         p_layout->setAlignment(ui->layout_page1, Qt::AlignCenter);
 
         QLabel* newsp_name = new QLabel(ui->page_1);
         QSpinBox* newsp_count = new QSpinBox(ui->page_1);
-        newsp_name->setText( QString::fromStdString( this->m_newsp_units[i]) );
+        newsp_name->setText( QString::fromStdString( *it ));
         newsp_count->setValue(0);
         this->m_NewspMissingHash[newsp_name] = newsp_count;
 
@@ -107,6 +110,7 @@ void MainWindow::on_button_option_proceed_clicked()
 void MainWindow::createSingleAddressList()
 {
     ui->stackedWidget->setCurrentIndex(2);
+    ui->lineEdit_address_courier->setText(QString::fromStdString(db.getCourierPlace()));
     ui->page_2_list_newsp->clear();
     int id = 0;
     QHashIterator<QLabel*, QSpinBox*> iter(this->m_NewspMissingHash);
@@ -160,7 +164,10 @@ void MainWindow::createMultipleAddressList()
 
                 address->setPlaceholderText("Addr. # " + QString::number(j));
                 // autofilling addresses to demonstrate
-                address->setText("Addr. # " + QString::number(j));
+//                address->setText("Addr. # " + QString::number(j));
+                QStringList* addrlist = new QStringList(db.getSubscriberAddresses());
+                QCompleter* completer = new QCompleter(*addrlist, this);
+                address->setCompleter(completer);
                 ui->layout_newsp_addresses->addWidget(address);
 
                 /* filling an output table */
@@ -187,9 +194,9 @@ void MainWindow::showReport()
     if (sender() == ui->sendButton_support)
     {
         QLabel* courier_addr = new QLabel();
-        QString* address_from_user = this->getCourierAddress();
-        ui->vlayout_report->addWidget(courier_addr);
+        QString address_from_user = this->getCourierAddress();
         courier_addr->setText(QString("Courier's address: ") + address_from_user);
+        ui->vlayout_report->addWidget(courier_addr);
     }
     std::map <std::string, int>::iterator it;
     for ( it = this->m_ReportNewsp.begin(); it != this->m_ReportNewsp.end(); it++ )
@@ -228,9 +235,9 @@ void MainWindow::showReport()
     ui->vlayout_report->addSpacerItem(spacer);
 }
 
-inline QString* MainWindow::getCourierAddress()
+inline QString MainWindow::getCourierAddress()
 {
-    QString* address = new QString(ui->lineEdit_address_courier->text());
+    QString address = ui->lineEdit_address_courier->text();
     return address;
 }
 

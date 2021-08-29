@@ -26,6 +26,9 @@ public:
     void initCourierInfo(std::string StaffID);
     std::string getCourierName();
     std::string getCourierDistrict();
+    std::string getCourierPlace();
+    std::set<std::string> getCourierNewspapers();
+    QStringList getSubscriberAddresses();
 
 public slots:
 
@@ -37,6 +40,7 @@ private:
     std::string m_courier_district;
     std::string m_courier_address;
     std::set<std::string> m_courier_newspapers;
+    std::set<std::string> m_subscriber_addresses;
 
 
 };

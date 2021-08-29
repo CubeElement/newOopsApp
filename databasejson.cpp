@@ -34,7 +34,6 @@ void DatabaseJSON::getDistrictID()
 
 bool DatabaseJSON::checkUserData(QString& StaffID)
 {
-//    this->printLoginData(this->m_JSON["Zusteller"][StaffID.toStdString()]);
     qDebug() << "StaffID: " << StaffID;
 
     std::string StaffID_str = StaffID.toStdString();
@@ -64,10 +63,15 @@ void DatabaseJSON::initCourierInfo(std::string StaffID)
     this->m_courier_district = this->m_JSON["Zusteller"][StaffID]["Bezirk"];
     this->m_courier_address = this->m_JSON["Zusteller"][StaffID]["Abladestelle"];
     json subscribers = this->m_JSON["BezNummer"][this->m_courier_district];
-    for (const auto &element : subscribers)
+    for (const auto &sub : subscribers)
     {
-        std::cout << "Newspaper " << element["Obj./Aus."] << std::endl;
-        this->m_courier_newspapers.insert(element["Obj./Aus."].get<std::string>());
+//        std::cout << "Newspaper " << element["Obj./Aus."] << std::endl;
+        this->m_courier_newspapers.insert(sub["Obj./Aus."].get<std::string>());
+        std::string city = sub["Ort"].get<std::string>();
+        std::string street = sub["Strasse"].get<std::string>();
+        std::string house = std::to_string(sub["Hausnr"].get<int>());
+        this->m_subscriber_addresses.insert(street + ", " +
+                                            house + " " + city);
     }
 }
 
@@ -81,7 +85,23 @@ std::string DatabaseJSON::getCourierDistrict()
     return this->m_courier_district;
 }
 
-//std::vector<std::string> DatabaseJSON::getCourierNewspapers()
-//{
-//    return this->m_courier_newspapers;
-//}
+std::set<std::string> DatabaseJSON::getCourierNewspapers()
+{
+    return this->m_courier_newspapers;
+}
+
+std::string DatabaseJSON::getCourierPlace()
+{
+    return this->m_courier_address;
+}
+
+QStringList DatabaseJSON::getSubscriberAddresses()
+{
+    QStringList subscr_qstringlist;
+    std::set<std::string> subscr_set = this->m_subscriber_addresses;
+    for ( auto& elem : subscr_set )
+    {
+        subscr_qstringlist << QString::fromStdString(elem);
+    }
+    return subscr_qstringlist;
+}

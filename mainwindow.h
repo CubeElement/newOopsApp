@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QLabel>
 #include <QSpinBox>
+#include <iterator>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,7 +32,7 @@ private:
 
 private:
     void moveToSelectorPage();
-    void createSelectorList(int n);
+    void createSelectorList(std::set<std::string>);
     void createSingleAddressList();
     void createMultipleAddressList();
 
@@ -40,7 +41,7 @@ private:
     QHash<QLabel*, QSpinBox*> m_NewspMissingHash;
     void showReport();
     void sendReport();
-    inline QString* getCourierAddress();
+    inline QString getCourierAddress();
 
     /* output datastructures: id, count, list(address) */
     std::map <std::string, int> m_ReportNewsp;
