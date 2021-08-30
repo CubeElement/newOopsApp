@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>newOopsApp - fluent distribution</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -74,7 +74,10 @@
          <item>
           <widget class="QLineEdit" name="line_password">
            <property name="inputMethodHints">
-            <set>Qt::ImhHiddenText|Qt::ImhSensitiveData</set>
+            <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
            </property>
            <property name="placeholderText">
             <string>Password</string>
@@ -89,12 +92,6 @@
          </item>
          <item>
           <widget class="QPushButton" name="button_signin">
-           <property name="autoFillBackground">
-            <bool>false</bool>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 110);</string>
-           </property>
            <property name="text">
             <string>Sign in</string>
            </property>
@@ -440,9 +437,6 @@
           <width>251</width>
           <height>301</height>
          </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgba(133, 225, 144, 20);</string>
         </property>
         <property name="widgetResizable">
          <bool>true</bool>

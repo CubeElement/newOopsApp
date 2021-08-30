@@ -21,7 +21,7 @@ public:
 
     void getDistrictID();
     int getStaffID();
-    bool checkUserData(QString& StaffID);
+    bool checkUserData(QString& StaffID, QString& Password);
     void printLoginData(nlohmann::json);
     void initCourierInfo(std::string StaffID);
     std::string getCourierName();
@@ -41,7 +41,7 @@ private:
     std::string m_courier_address;
     std::set<std::string> m_courier_newspapers;
     std::set<std::string> m_subscriber_addresses;
-
+    bool checkPassword(std::string, std::string);
 
 };
 

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <QDebug>
 #include <stdexcept>
+#include <map>
 
 
 DatabaseJSON::DatabaseJSON()
@@ -32,14 +33,14 @@ void DatabaseJSON::getDistrictID()
 
 }
 
-bool DatabaseJSON::checkUserData(QString& StaffID)
+bool DatabaseJSON::checkUserData(QString& StaffID, QString& Password)
 {
-    qDebug() << "StaffID: " << StaffID;
-
     std::string StaffID_str = StaffID.toStdString();
+    std::string Password_str = Password.toStdString();
     json::iterator iter;
     iter = this->m_JSON["Zusteller"].find(StaffID_str);
-    if ( iter != this->m_JSON["Zusteller"].end() )
+    if ( iter != this->m_JSON["Zusteller"].end()
+         && this->checkPassword(StaffID_str, Password_str))
     {
         initCourierInfo(StaffID_str);
         return true;
@@ -48,6 +49,26 @@ bool DatabaseJSON::checkUserData(QString& StaffID)
     {
         return false;
     }
+}
+
+bool DatabaseJSON::checkPassword(std::string StaffID, std::string Password)
+{
+    const std::map<std::string, std::string> passwords =
+    {
+        {"1001", "1001"},
+        {"1052", "1052"}
+    };
+    std::map<std::string, std::string>::const_iterator iter;
+    iter = passwords.find(StaffID);
+    if ( iter != passwords.end() && iter->second == Password )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
 }
 
 void DatabaseJSON::printLoginData(nlohmann::json infdata)
@@ -65,7 +86,6 @@ void DatabaseJSON::initCourierInfo(std::string StaffID)
     json subscribers = this->m_JSON["BezNummer"][this->m_courier_district];
     for (const auto &sub : subscribers)
     {
-//        std::cout << "Newspaper " << element["Obj./Aus."] << std::endl;
         this->m_courier_newspapers.insert(sub["Obj./Aus."].get<std::string>());
         std::string city = sub["Ort"].get<std::string>();
         std::string street = sub["Strasse"].get<std::string>();

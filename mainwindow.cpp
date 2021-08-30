@@ -36,7 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::sendReport);
     connect(ui->button_signin, &QPushButton::clicked,
             this,
-            [=]() { MainWindow::onButtonSigninClicked(ui->line_staff_id->text()); });
+            [=]() { MainWindow::onButtonSigninClicked(ui->line_staff_id->text(),
+                                                      ui->line_password->text()); });
 
 };
 
@@ -50,25 +51,27 @@ void MainWindow::moveToSelectorPage()
     ui->stackedWidget->setCurrentIndex(1);
 }
 
-void MainWindow::onButtonSigninClicked(QString staff_id)
+void MainWindow::onButtonSigninClicked(QString staff_id, QString password)
 {
-    if ( db.checkUserData(staff_id) )
+    if ( db.checkUserData(staff_id, password) )
     {
-        qDebug() << "Login succesful" << "\n";
         ui->stackedWidget->setCurrentIndex(1);
         ui->label_staff_id->setText(QString("Hello, ") +
                                     QString::fromStdString(db.getCourierName()));
         createSelectorList(db.getCourierNewspapers());
     } else
     {
-        qDebug() << "Login failed" << "\n";
-        QMessageBox message;
-        message.setText("Wrong login!");
-        message.setIcon(QMessageBox::Warning);
-        message.setSizeIncrement(120, 40);
-        message.exec();
+        messageBox("Authorization failed!");
     }
+}
 
+void MainWindow::messageBox(std::string message_text)
+{
+    QMessageBox message;
+    message.setText(QString::fromStdString(message_text));
+    message.setIcon(QMessageBox::Warning);
+    message.setSizeIncrement(120, 40);
+    message.exec();
 }
 
 void MainWindow::createSelectorList(const std::set<std::string>& units_list)

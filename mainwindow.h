@@ -24,7 +24,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void onButtonSigninClicked(QString staff_id);
+    void onButtonSigninClicked(QString staff_id, QString password);
     void on_button_option_proceed_clicked();
 
 private:
@@ -58,6 +58,7 @@ private:
     inline QString getCourierAddress();
 
     inline void clearReportData();
+    void messageBox(std::string);
 
 private:
 };
