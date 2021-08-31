@@ -86,7 +86,14 @@ void MainWindow::createSelectorList(const std::set<std::string>& units_list)
         QSpinBox* newsp_count = new QSpinBox(ui->page_1);
         newsp_name->setText( QString::fromStdString( *it ));
         newsp_count->setValue(0);
-        this->m_NewspMissingHash[newsp_name] = newsp_count;
+        QObject::connect(this,
+                         &MainWindow::sendSelectionValues,
+                         this,
+                         [=]() { MainWindow::receiveSelectionValues(
+                                newsp_name->text(),
+                                newsp_count->value());
+                               }
+                        );
 
         p_layout->addWidget(newsp_name);
         p_layout->addWidget(newsp_count);
@@ -101,96 +108,45 @@ void MainWindow::createSelectorList(const std::set<std::string>& units_list)
 void MainWindow::on_button_option_proceed_clicked()
 {
     this->clearReportData();
-
     if ( ui->radio_address->isChecked() )
     {
         ui->stackedWidget->setCurrentIndex(2);
-        createSingleAddressList();
+        ui->lineEdit_address_courier->setText(QString::fromStdString(db.getCourierPlace()));
+        ui->page_2_list_newsp->clear();
     }
     else if ( ui->radio_delivery->isChecked() )
     {
         ui->stackedWidget->setCurrentIndex(3);
-        createMultipleAddressList();
-    }
-}
-
-void MainWindow::createSingleAddressList()
-{
-    ui->lineEdit_address_courier->setText(QString::fromStdString(db.getCourierPlace()));
-    ui->page_2_list_newsp->clear();
-    int id = 0;
-    QHashIterator<QLabel*, QSpinBox*> iter(this->m_NewspMissingHash);
-    while (iter.hasNext()) {
-        iter.next();
-        QLabel* key = iter.key();
-        QSpinBox* value = iter.value();
-
-        if ((*value).value() != 0)
-        {
-            ui->page_2_list_newsp->addItem(QString((*key).text()) + ", " +
-                                           QString::number((*value).value()));
-            /* adding data to report */
-            this->addNewsp(((*key).text()).toStdString(), id);
-            this->addNewspCounter(id, (*value).text().toInt());
-            id++;
+        /* clear children of layout */
+        QLayoutItem *child;
+        while ((child = ui->layout_newsp_addresses->takeAt(0)) != 0) {
+            delete child->widget();
+            delete child;
         }
     }
-    ui->page_2_list_newsp->sortItems(Qt::AscendingOrder);
-
-    if ( id == 0 ) {
-        this->messageBox( "There should be at least 1 missing item" );
-        this->moveToSelectorPage();
-    }
+    emit sendSelectionValues();
 }
 
-void MainWindow::createMultipleAddressList()
+void MainWindow::receiveSelectionValues(QString name, int count)
 {
-    QLayoutItem *child;
-    while ((child = ui->layout_newsp_addresses->takeAt(0)) != 0) {
-        delete child->widget();
-        delete child;
-    }
-
-    int id = 0;
-    QHashIterator<QLabel*, QSpinBox*> iter(this->m_NewspMissingHash);
-    while (iter.hasNext())
+    if ( ui->stackedWidget->currentIndex() == 2 )
     {
-        iter.next();
-        QLabel* key = iter.key();
-        QSpinBox* value = iter.value();
-
-        if ((*value).value() != 0)
+        ui->page_2_list_newsp->addItem(name + " " + QString::number(count)
+                                       + " pcs.");
+    } else if ( ui->stackedWidget->currentIndex() == 3 )
+    {
+        QLabel* title = new QLabel();
+        title->setText(name);
+        ui->layout_newsp_addresses->addWidget(title);
+        for ( int j = 0 ; j < count ; j++ )
         {
-            this->addNewsp(((*key).text()).toStdString(), id);
-            this->addNewspCounter(id, (*value).text().toInt());
-            id++;
-
-            QLabel* title = new QLabel();
-            title->setText((*key).text());
-            ui->layout_newsp_addresses->addWidget(title);
-            for ( int j = 0 ; j < (*value).value() ; j++ )
-            {
-                QLineEdit* address = new QLineEdit();
-
-                address->setPlaceholderText("Addr. # " + QString::number(j));
-                // autofilling addresses to demonstration
-//                address->setText("Addr. # " + QString::number(j));
-                QStringList* addrlist = new QStringList(db.getSubscriberAddresses());
-                QCompleter* completer = new QCompleter(*addrlist, this);
-                address->setCompleter(completer);
-                ui->layout_newsp_addresses->addWidget(address);
-
-                /* filling an output table */
-                this->addNewspAddr(
-                            this->getNewspId(((*key).text()).toStdString()),
-                            address);
-            }
-        } //  if end
-    } //  while end
-
-    if ( id == 0 ) {
-        this->messageBox( "There should be at least 1 missing item" );
-        this->moveToSelectorPage();
+            QLineEdit* address = new QLineEdit();
+            address->setPlaceholderText("Addr. # " + QString::number(j));
+            QStringList* addrlist = new QStringList(db.getSubscriberAddresses());
+            QCompleter* completer = new QCompleter(*addrlist, this);
+            address->setCompleter(completer);
+            ui->layout_newsp_addresses->addWidget(address);
+        }
     }
 }
 

@@ -26,6 +26,10 @@ public:
 private slots:
     void onButtonSigninClicked(QString staff_id, QString password);
     void on_button_option_proceed_clicked();
+    void receiveSelectionValues(QString, int);
+
+signals:
+    void sendSelectionValues();
 
 private:
     Ui::MainWindow *ui;
@@ -34,12 +38,8 @@ private:
 private:
     void moveToSelectorPage();
     void createSelectorList(const std::set<std::string>& units_list);
-    void createSingleAddressList();
-    void createMultipleAddressList();
     void showReport();
     void sendReport();
-
-    QHash<QLabel*, QSpinBox*> m_NewspMissingHash;
 
     /* output datastructures: id, count, list(address) */
     std::map <std::string, int> m_ReportNewsp;
