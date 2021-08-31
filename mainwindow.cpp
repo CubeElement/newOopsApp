@@ -104,17 +104,18 @@ void MainWindow::on_button_option_proceed_clicked()
 
     if ( ui->radio_address->isChecked() )
     {
+        ui->stackedWidget->setCurrentIndex(2);
         createSingleAddressList();
-
-    } else if ( ui->radio_delivery->isChecked() )
+    }
+    else if ( ui->radio_delivery->isChecked() )
     {
+        ui->stackedWidget->setCurrentIndex(3);
         createMultipleAddressList();
     }
 }
 
 void MainWindow::createSingleAddressList()
 {
-    ui->stackedWidget->setCurrentIndex(2);
     ui->lineEdit_address_courier->setText(QString::fromStdString(db.getCourierPlace()));
     ui->page_2_list_newsp->clear();
     int id = 0;
@@ -135,11 +136,15 @@ void MainWindow::createSingleAddressList()
         }
     }
     ui->page_2_list_newsp->sortItems(Qt::AscendingOrder);
+
+    if ( id == 0 ) {
+        this->messageBox( "There should be at least 1 missing item" );
+        this->moveToSelectorPage();
+    }
 }
 
 void MainWindow::createMultipleAddressList()
 {
-    ui->stackedWidget->setCurrentIndex(3);
     QLayoutItem *child;
     while ((child = ui->layout_newsp_addresses->takeAt(0)) != 0) {
         delete child->widget();
@@ -182,13 +187,17 @@ void MainWindow::createMultipleAddressList()
             }
         } //  if end
     } //  while end
+
+    if ( id == 0 ) {
+        this->messageBox( "There should be at least 1 missing item" );
+        this->moveToSelectorPage();
+    }
 }
 
 void MainWindow::sendReport()
 {
-    this->showReport();
     ui->stackedWidget->setCurrentIndex(4);
-
+    this->showReport();
 }
 
 void MainWindow::showReport()
