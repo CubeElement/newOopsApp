@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::sendReport);
     connect(ui->sendButton_support, &QPushButton::clicked,
             this, &MainWindow::sendReport);
+    connect(ui->button_option_proceed, &QPushButton::clicked,
+            this, &MainWindow::onButtonOptionProceedClicked );
     connect(ui->button_signin, &QPushButton::clicked,
             this, [=]() { MainWindow::onButtonSigninClicked(
                           ui->line_staff_id->text(),
@@ -45,29 +47,21 @@ MainWindow::~MainWindow()
 void MainWindow::moveToSelectorPage()
 {
     ui->stackedWidget->setCurrentIndex(1);
+    m_isNotEmptySelection = false;
 }
 
 void MainWindow::onButtonSigninClicked(QString staff_id, QString password)
 {
     if ( db.checkUserData(staff_id, password) )
     {
-        ui->stackedWidget->setCurrentIndex(1);
+        this->moveToSelectorPage();
         ui->label_staff_id->setText(QString("Hello, ") +
                                     db.getCourierName());
         createSelectorList(db.getCourierNewspapers());
     } else
     {
-        messageBox("Authorization failed!");
+        messageBox("Authorization failed");
     }
-}
-
-void MainWindow::messageBox(std::string message_text)
-{
-    QMessageBox message;
-    message.setText(QString::fromStdString(message_text));
-    message.setIcon(QMessageBox::Warning);
-    message.setSizeIncrement(120, 40);
-    message.exec();
 }
 
 void MainWindow::createSelectorList(const QSet<QString>& units_list)
@@ -83,9 +77,11 @@ void MainWindow::createSelectorList(const QSet<QString>& units_list)
         newsp_name->setText( it.next() );
         newsp_count->setValue(0);
         QObject::connect(this, &MainWindow::sendSelectionValues,
-                         this, [=]() { MainWindow::receiveSelectionValues(
+                         this, [=]() { MainWindow::addWidgetsLists(
                                        newsp_name->text(),
                                        newsp_count->value()); } );
+        connect(this, &MainWindow::selectionStatus,
+                this, [=]() { MainWindow::setSelectionStatus(newsp_count->value()); } );
         p_layout->addWidget(newsp_name);
         p_layout->addWidget(newsp_count);
         ui->layout_page1->addLayout(p_layout);
@@ -93,31 +89,49 @@ void MainWindow::createSelectorList(const QSet<QString>& units_list)
     QSpacerItem* spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding,
                                                 QSizePolicy::Expanding);
     ui->layout_page1->addSpacerItem(spacer);
-
+}
+void MainWindow::setSelectionStatus(int val)
+{
+    if ( val != 0 )
+    {
+        this->m_isNotEmptySelection = true;
+    }
 }
 
-void MainWindow::on_button_option_proceed_clicked()
+void MainWindow::onButtonOptionProceedClicked()
 {
-    if ( ui->radio_address->isChecked() )
+    emit selectionStatus();
+    if ( this->m_isNotEmptySelection )
     {
-        ui->stackedWidget->setCurrentIndex(2);
-        ui->lineEdit_address_courier->setText(db.getCourierPlace());
-        ui->page_2_list_newsp->clear();
-    }
-    else if ( ui->radio_delivery->isChecked() )
-    {
-        ui->stackedWidget->setCurrentIndex(3);
         /* clear children of layout */
         QLayoutItem *child;
         while ((child = ui->layout_newsp_addresses->takeAt(0)) != 0) {
             delete child->widget();
             delete child;
         }
+        ui->page_2_list_newsp->clear();
+
+        if ( ui->radio_address->isChecked() )
+        {
+            ui->stackedWidget->setCurrentIndex(2);
+            ui->lineEdit_address_courier->setText(db.getCourierPlace());
+            emit sendSelectionValues();
+        }
+        else if ( ui->radio_delivery->isChecked() )
+        {
+            ui->stackedWidget->setCurrentIndex(3);
+            emit sendSelectionValues();
+            QSpacerItem* spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding,
+                                                        QSizePolicy::Expanding);
+            ui->layout_newsp_addresses->addSpacerItem(spacer);
+        }
+    } else
+    {
+        messageBox("Selection list should not be empty");
     }
-    emit sendSelectionValues();
 }
 
-void MainWindow::receiveSelectionValues(QString name, int count)
+void MainWindow::addWidgetsLists(QString name, int count)
 {
     QString count_str = QString::number(count);
     if ( ui->stackedWidget->currentIndex() == 2 && count != 0)
@@ -169,7 +183,7 @@ void MainWindow::sendReport()
     ui->vlayout_report->addSpacerItem(spacer);
 }
 
-void MainWindow::showReport(QString name, QString info_value)
+void MainWindow::showReport(const QString& name, const QString& info_value)
 {
     QHBoxLayout* hlayout = new QHBoxLayout();
     QLabel* newsp = new QLabel();
@@ -185,4 +199,13 @@ inline QString MainWindow::getCourierAddress()
 {
     QString address = ui->lineEdit_address_courier->text();
     return address;
+}
+
+void MainWindow::messageBox(std::string message_text)
+{
+    QMessageBox message;
+    message.setText(QString::fromStdString(message_text));
+    message.setIcon(QMessageBox::Warning);
+    message.setSizeIncrement(120, 40);
+    message.exec();
 }

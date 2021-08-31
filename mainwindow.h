@@ -21,27 +21,27 @@ public:
 
 private slots:
     void onButtonSigninClicked(QString staff_id, QString password);
-    void on_button_option_proceed_clicked();
-    void receiveSelectionValues(QString, int);
-    void showReport(QString, QString);
+    void onButtonOptionProceedClicked();
+    void addWidgetsLists(QString, int);
+    void showReport(const QString&, const QString&);
+    void setSelectionStatus(int);
 
 signals:
     void sendSelectionValues();
     void sendReportData();
+    void selectionStatus();
 
 private:
     Ui::MainWindow *ui;
     DatabaseJSON db;
 
-private:
+public:
     void moveToSelectorPage();
     void createSelectorList(const QSet<QString>& units_list);
     void sendReport();
-
     inline QString getCourierAddress();
     void messageBox(std::string);
-
-private:
+    bool m_isNotEmptySelection;
 };
 
 #endif // MAINWINDOW_H
