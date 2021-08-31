@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QThread>
 #include <vector>
-#include <set>
+#include <QSet>
 
 using json = nlohmann::json;
 
@@ -24,10 +24,10 @@ public:
     bool checkUserData(QString& StaffID, QString& Password);
     void printLoginData(nlohmann::json);
     void initCourierInfo(std::string StaffID);
-    std::string getCourierName();
-    std::string getCourierDistrict();
-    std::string getCourierPlace();
-    std::set<std::string> getCourierNewspapers();
+    QString getCourierName();
+    QString getCourierDistrict();
+    QString getCourierPlace();
+    QSet<QString> getCourierNewspapers();
     QStringList getSubscriberAddresses();
 
 public slots:
@@ -39,9 +39,9 @@ private:
     std::string m_lastname;
     std::string m_courier_district;
     std::string m_courier_address;
-    std::set<std::string> m_courier_newspapers;
-    std::set<std::string> m_subscriber_addresses;
-    bool checkPassword(std::string, std::string);
+    QSet<QString> m_courier_newspapers;
+    QSet<QString> m_subscriber_addresses;
+    bool checkResgistration(std::string, std::string);
 
 };
 

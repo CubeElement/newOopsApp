@@ -35,7 +35,7 @@ private:
 
 private:
     void moveToSelectorPage();
-    void createSelectorList(const std::set<std::string>& units_list);
+    void createSelectorList(const QSet<QString>& units_list);
     void sendReport();
 
     inline QString getCourierAddress();

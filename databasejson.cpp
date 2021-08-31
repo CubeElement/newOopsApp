@@ -10,7 +10,6 @@
 DatabaseJSON::DatabaseJSON()
 {
     this->openJSON();
-    this->getDistrictID();
 }
 
 void DatabaseJSON::openJSON()
@@ -28,11 +27,6 @@ void DatabaseJSON::openJSON()
     }
 }
 
-void DatabaseJSON::getDistrictID()
-{
-
-}
-
 bool DatabaseJSON::checkUserData(QString& StaffID, QString& Password)
 {
     std::string StaffID_str = StaffID.toStdString();
@@ -40,7 +34,7 @@ bool DatabaseJSON::checkUserData(QString& StaffID, QString& Password)
     json::iterator iter;
     iter = this->m_JSON["Zusteller"].find(StaffID_str);
     if ( iter != this->m_JSON["Zusteller"].end()
-         && this->checkPassword(StaffID_str, Password_str))
+         && this->checkResgistration(StaffID_str, Password_str))
     {
         initCourierInfo(StaffID_str);
         return true;
@@ -51,7 +45,7 @@ bool DatabaseJSON::checkUserData(QString& StaffID, QString& Password)
     }
 }
 
-bool DatabaseJSON::checkPassword(std::string StaffID, std::string Password)
+bool DatabaseJSON::checkResgistration(std::string StaffID, std::string Password)
 {
     const std::map<std::string, std::string> passwords =
     {
@@ -86,42 +80,45 @@ void DatabaseJSON::initCourierInfo(std::string StaffID)
     json subscribers = this->m_JSON["BezNummer"][this->m_courier_district];
     for (const auto &sub : subscribers)
     {
-        this->m_courier_newspapers.insert(sub["Obj./Aus."].get<std::string>());
+        this->m_courier_newspapers.insert(QString::fromStdString(
+                                              sub["Obj./Aus."].get<std::string>()
+                                          ));
         std::string city = sub["Ort"].get<std::string>();
         std::string street = sub["Strasse"].get<std::string>();
         std::string house = std::to_string(sub["Hausnr"].get<int>());
-        this->m_subscriber_addresses.insert(street + ", " +
-                                            house + " " + city);
+        this->m_subscriber_addresses.insert(QString::fromStdString(
+                                                street + ", " +
+                                                house + " " + city));
     }
 }
 
-std::string DatabaseJSON::getCourierName()
+QString DatabaseJSON::getCourierName()
 {
-    return this->m_name;
+    return QString::fromStdString(this->m_name);
 }
 
-std::string DatabaseJSON::getCourierDistrict()
+QString DatabaseJSON::getCourierDistrict()
 {
-    return this->m_courier_district;
+    return QString::fromStdString(this->m_courier_district);
 }
 
-std::set<std::string> DatabaseJSON::getCourierNewspapers()
+QSet<QString> DatabaseJSON::getCourierNewspapers()
 {
     return this->m_courier_newspapers;
 }
 
-std::string DatabaseJSON::getCourierPlace()
+QString DatabaseJSON::getCourierPlace()
 {
-    return this->m_courier_address;
+    return QString::fromStdString(this->m_courier_address);
 }
 
 QStringList DatabaseJSON::getSubscriberAddresses()
 {
     QStringList subscr_qstringlist;
-    std::set<std::string> subscr_set = this->m_subscriber_addresses;
+    QSet<QString> subscr_set = this->m_subscriber_addresses;
     for ( auto& elem : subscr_set )
     {
-        subscr_qstringlist << QString::fromStdString(elem);
+        subscr_qstringlist << elem;
     }
     return subscr_qstringlist;
 }

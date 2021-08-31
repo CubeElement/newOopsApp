@@ -13,6 +13,8 @@
 #include <iterator>
 #include <QCompleter>
 #include <QMessageBox>
+#include <QSet>
+#include <QSetIterator>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -30,10 +32,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->sendButton_support, &QPushButton::clicked,
             this, &MainWindow::sendReport);
     connect(ui->button_signin, &QPushButton::clicked,
-            this,
-            [=]() { MainWindow::onButtonSigninClicked(ui->line_staff_id->text(),
-                                                      ui->line_password->text()); });
-
+            this, [=]() { MainWindow::onButtonSigninClicked(
+                          ui->line_staff_id->text(),
+                          ui->line_password->text() ); } );
 };
 
 MainWindow::~MainWindow()
@@ -52,7 +53,7 @@ void MainWindow::onButtonSigninClicked(QString staff_id, QString password)
     {
         ui->stackedWidget->setCurrentIndex(1);
         ui->label_staff_id->setText(QString("Hello, ") +
-                                    QString::fromStdString(db.getCourierName()));
+                                    db.getCourierName());
         createSelectorList(db.getCourierNewspapers());
     } else
     {
@@ -69,35 +70,30 @@ void MainWindow::messageBox(std::string message_text)
     message.exec();
 }
 
-void MainWindow::createSelectorList(const std::set<std::string>& units_list)
+void MainWindow::createSelectorList(const QSet<QString>& units_list)
 {
-    std::set<std::string>::iterator it;
-    for ( it = units_list.begin(); it != units_list.end(); it++ )
+    QSetIterator<QString> it(units_list);
+    while ( it.hasNext())
     {
         QHBoxLayout* p_layout = new QHBoxLayout();
         p_layout->setAlignment(ui->layout_page1, Qt::AlignCenter);
 
         QLabel* newsp_name = new QLabel(ui->page_1);
         QSpinBox* newsp_count = new QSpinBox(ui->page_1);
-        newsp_name->setText( QString::fromStdString( *it ));
+        newsp_name->setText( it.next() );
         newsp_count->setValue(0);
-        QObject::connect(this,
-                         &MainWindow::sendSelectionValues,
-                         this,
-                         [=]() { MainWindow::receiveSelectionValues(
-                                newsp_name->text(),
-                                newsp_count->value());
-                               }
-                        );
-
+        QObject::connect(this, &MainWindow::sendSelectionValues,
+                         this, [=]() { MainWindow::receiveSelectionValues(
+                                       newsp_name->text(),
+                                       newsp_count->value()); } );
         p_layout->addWidget(newsp_name);
         p_layout->addWidget(newsp_count);
         ui->layout_page1->addLayout(p_layout);
     }
-    QSpacerItem* spacer = new QSpacerItem(100, 100,
-                                          QSizePolicy::Expanding,
-                                          QSizePolicy::Expanding);
+    QSpacerItem* spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding,
+                                                QSizePolicy::Expanding);
     ui->layout_page1->addSpacerItem(spacer);
+
 }
 
 void MainWindow::on_button_option_proceed_clicked()
@@ -105,7 +101,7 @@ void MainWindow::on_button_option_proceed_clicked()
     if ( ui->radio_address->isChecked() )
     {
         ui->stackedWidget->setCurrentIndex(2);
-        ui->lineEdit_address_courier->setText(QString::fromStdString(db.getCourierPlace()));
+        ui->lineEdit_address_courier->setText(db.getCourierPlace());
         ui->page_2_list_newsp->clear();
     }
     else if ( ui->radio_delivery->isChecked() )
@@ -127,12 +123,10 @@ void MainWindow::receiveSelectionValues(QString name, int count)
     if ( ui->stackedWidget->currentIndex() == 2 && count != 0)
     {
         ui->page_2_list_newsp->addItem(name + " " + count_str + " pcs.");
-        QObject::connect(this,
-                         &MainWindow::sendReportData,
-                         this,
-                         [=]() { MainWindow::showReport(
-                                name,
-                                count_str); });
+        QObject::connect(this, &MainWindow::sendReportData,
+                         this, [=]() { MainWindow::showReport(
+                                       name,
+                                       count_str); } );
     } else if ( ui->stackedWidget->currentIndex() == 3  && count != 0)
     {
         QLabel* title = new QLabel();
@@ -146,12 +140,10 @@ void MainWindow::receiveSelectionValues(QString name, int count)
             QCompleter* completer = new QCompleter(*addrlist, this);
             address->setCompleter(completer);
             ui->layout_newsp_addresses->addWidget(address);
-            QObject::connect(this,
-                             &MainWindow::sendReportData,
-                             this,
-                             [=]() { MainWindow::showReport(
-                                    name,
-                                    address->text()); });
+            QObject::connect(this, &MainWindow::sendReportData,
+                             this, [=]() { MainWindow::showReport(
+                                           name,
+                                           address->text()); } );
         }
     }
 }
@@ -170,8 +162,11 @@ void MainWindow::sendReport()
         courier_addr->setText(QString("Courier's address: ") + address_from_user);
         ui->vlayout_report->addWidget(courier_addr);
     }
-
     emit sendReportData();
+
+    QSpacerItem* spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding,
+                                                QSizePolicy::Expanding);
+    ui->vlayout_report->addSpacerItem(spacer);
 }
 
 void MainWindow::showReport(QString name, QString info_value)
@@ -184,11 +179,6 @@ void MainWindow::showReport(QString name, QString info_value)
     hlayout->addWidget(newsp);
     hlayout->addWidget(info);
     ui->vlayout_report->addLayout(hlayout);
-
-    QSpacerItem* spacer = new QSpacerItem(100, 100,
-                                          QSizePolicy::Expanding,
-                                          QSizePolicy::Expanding);
-    ui->vlayout_report->addSpacerItem(spacer);
 }
 
 inline QString MainWindow::getCourierAddress()
