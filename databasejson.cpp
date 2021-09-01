@@ -85,11 +85,13 @@ void DatabaseJSON::initCourierInfo(std::string StaffID)
         this->m_courier_newspapers.insert(newspaper);
         this->m_courier_newspapers_all.append(newspaper);
         std::string city = sub["Ort"].get<std::string>();
+        std::string name = sub["Name"].get<std::string>();
         std::string street = sub["Strasse"].get<std::string>();
         std::string house = std::to_string(sub["Hausnr"].get<int>());
         this->m_subscriber_addresses.insert(QString::fromStdString(
-                                                street + ", " +
-                                                house + " " + city));
+                                                street + ", " + house + "\n" +
+                                                "[ " + name + " ] \n" +
+                                                city));
     }
 }
 

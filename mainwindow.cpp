@@ -152,7 +152,7 @@ void MainWindow::addWidgetsLists(QString name, int count)
         QObject::connect(this, &MainWindow::sendReportSingleAddr,
                          this, [=]() { MainWindow::showReport(
                                        name,
-                                       count_str); } );
+                                       count_str + " pcs."); } );
     } else if ( ui->stackedWidget->currentIndex() == 3  && count != 0)
     {
         QLabel* title = new QLabel();
@@ -201,10 +201,13 @@ void MainWindow::sendReport()
 void MainWindow::showReport(const QString& name, const QString& info_value)
 {
     QHBoxLayout* hlayout = new QHBoxLayout();
+    hlayout->setSizeConstraint(QLayout::SetNoConstraint);
     QLabel* newsp = new QLabel();
     QLabel* info = new QLabel();
     newsp->setText(name);
     info->setText(info_value);
+    newsp->setGeometry(50, 10, 0, 0);
+    newsp->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     hlayout->addWidget(newsp);
     hlayout->addWidget(info);
     ui->vlayout_report->addLayout(hlayout);
