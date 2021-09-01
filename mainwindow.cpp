@@ -37,6 +37,10 @@ MainWindow::MainWindow(QWidget *parent)
             this, [=]() { MainWindow::onButtonSigninClicked(
                           ui->line_staff_id->text(),
                           ui->line_password->text() ); } );
+    connect(ui->line_password, &QLineEdit::returnPressed,
+            ui->button_signin, [this](){ emit ui->button_signin->clicked();});
+    connect(ui->line_staff_id, &QLineEdit::returnPressed,
+            ui->button_signin, [this](){ emit ui->button_signin->clicked();});
 
     ui->progressBar->setValue(25);
     ui->progressBar->setFormat("1 / 4 Authentication");
