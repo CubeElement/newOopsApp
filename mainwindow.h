@@ -28,7 +28,8 @@ private slots:
 
 signals:
     void sendSelectionValues();
-    void sendReportData();
+    void sendReportSingleAddr();
+    void sendReportMultiAddr();
     void selectionStatus();
 
 private:
@@ -37,7 +38,7 @@ private:
 
 public:
     void moveToSelectorPage();
-    void createSelectorList(const QSet<QString>& units_list);
+    void addSelectorList(const QSet<QString>& units_list);
     void sendReport();
     inline QString getCourierAddress();
     void messageBox(std::string);

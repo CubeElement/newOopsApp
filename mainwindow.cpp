@@ -57,14 +57,14 @@ void MainWindow::onButtonSigninClicked(QString staff_id, QString password)
         this->moveToSelectorPage();
         ui->label_staff_id->setText(QString("Hello, ") +
                                     db.getCourierName());
-        createSelectorList(db.getCourierNewspapers());
+        addSelectorList(db.getCourierNewspapers());
     } else
     {
         messageBox("Authorization failed");
     }
 }
 
-void MainWindow::createSelectorList(const QSet<QString>& units_list)
+void MainWindow::addSelectorList(const QSet<QString>& units_list)
 {
     QSetIterator<QString> it(units_list);
     while ( it.hasNext())
@@ -100,17 +100,18 @@ void MainWindow::setSelectionStatus(int val)
 
 void MainWindow::onButtonOptionProceedClicked()
 {
+    QLayoutItem *child;
+    while ((child = ui->layout_newsp_addresses->takeAt(0)) != 0) {
+        delete child->widget();
+        delete child;
+    }
+    while (ui->page_2_list_newsp->count() != 0) {
+        QListWidgetItem *child2 = ui->page_2_list_newsp->takeItem(0);
+        delete child2;
+    }
     emit selectionStatus();
     if ( this->m_isNotEmptySelection )
     {
-        /* clear children of layout */
-        QLayoutItem *child;
-        while ((child = ui->layout_newsp_addresses->takeAt(0)) != 0) {
-            delete child->widget();
-            delete child;
-        }
-        ui->page_2_list_newsp->clear();
-
         if ( ui->radio_address->isChecked() )
         {
             ui->stackedWidget->setCurrentIndex(2);
@@ -137,7 +138,7 @@ void MainWindow::addWidgetsLists(QString name, int count)
     if ( ui->stackedWidget->currentIndex() == 2 && count != 0)
     {
         ui->page_2_list_newsp->addItem(name + " " + count_str + " pcs.");
-        QObject::connect(this, &MainWindow::sendReportData,
+        QObject::connect(this, &MainWindow::sendReportSingleAddr,
                          this, [=]() { MainWindow::showReport(
                                        name,
                                        count_str); } );
@@ -154,7 +155,7 @@ void MainWindow::addWidgetsLists(QString name, int count)
             QCompleter* completer = new QCompleter(*addrlist, this);
             address->setCompleter(completer);
             ui->layout_newsp_addresses->addWidget(address);
-            QObject::connect(this, &MainWindow::sendReportData,
+            QObject::connect(this, &MainWindow::sendReportMultiAddr,
                              this, [=]() { MainWindow::showReport(
                                            name,
                                            address->text()); } );
@@ -165,7 +166,6 @@ void MainWindow::addWidgetsLists(QString name, int count)
 void MainWindow::sendReport()
 {
     ui->stackedWidget->setCurrentIndex(4);
-
     QLabel* shipping_address_annotation = new QLabel();
     shipping_address_annotation->setText(QString("Your request have been sent \n"));
     ui->vlayout_report->addWidget(shipping_address_annotation);
@@ -175,8 +175,12 @@ void MainWindow::sendReport()
         QString address_from_user = this->getCourierAddress();
         courier_addr->setText(QString("Courier's address: ") + address_from_user);
         ui->vlayout_report->addWidget(courier_addr);
+        emit sendReportSingleAddr();
     }
-    emit sendReportData();
+    else
+    {
+        emit sendReportMultiAddr();
+    }
 
     QSpacerItem* spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding,
                                                 QSizePolicy::Expanding);
