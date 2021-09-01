@@ -37,6 +37,9 @@ MainWindow::MainWindow(QWidget *parent)
             this, [=]() { MainWindow::onButtonSigninClicked(
                           ui->line_staff_id->text(),
                           ui->line_password->text() ); } );
+
+    ui->progressBar->setValue(25);
+    ui->progressBar->setFormat("1 / 4 Authentication");
 };
 
 MainWindow::~MainWindow()
@@ -48,6 +51,9 @@ void MainWindow::moveToSelectorPage()
 {
     ui->stackedWidget->setCurrentIndex(1);
     m_isNotEmptySelection = false;
+
+    ui->progressBar->setValue(50);
+    ui->progressBar->setFormat("2 / 4 Selection");
 }
 
 void MainWindow::onButtonSigninClicked(QString staff_id, QString password)
@@ -132,6 +138,9 @@ void MainWindow::onButtonOptionProceedClicked()
     {
         messageBox("Selection list should not be empty");
     }
+
+    ui->progressBar->setValue(75);
+    ui->progressBar->setFormat("3 / 4 Input");
 }
 
 void MainWindow::addWidgetsLists(QString name, int count)
@@ -199,6 +208,9 @@ void MainWindow::showReport(const QString& name, const QString& info_value)
     hlayout->addWidget(newsp);
     hlayout->addWidget(info);
     ui->vlayout_report->addLayout(hlayout);
+
+    ui->progressBar->setValue(100);
+    ui->progressBar->setFormat("4 / 4 Results");
 }
 
 inline QString MainWindow::getCourierAddress()
