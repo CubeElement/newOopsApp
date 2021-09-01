@@ -175,7 +175,7 @@ void MainWindow::sendReport()
     {
         QLabel* courier_addr = new QLabel();
         QString address_from_user = this->getCourierAddress();
-        courier_addr->setText(QString("Courier's address: ") + address_from_user);
+        courier_addr->setText(QString("Courier's address:\n") + address_from_user);
         ui->vlayout_report->addWidget(courier_addr);
         emit sendReportSingleAddr();
     }
@@ -215,3 +215,9 @@ void MainWindow::messageBox(std::string message_text)
     message.setSizeIncrement(120, 40);
     message.exec();
 }
+
+void MainWindow::on_report_page_finish_clicked()
+{
+    this->close();
+}
+

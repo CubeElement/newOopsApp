@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>298</width>
+    <width>300</width>
     <height>400</height>
    </rect>
   </property>
@@ -20,6 +20,24 @@
    <string>newOopsApp - fluent distribution</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>300</width>
+     <height>375</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>300</width>
+     <height>375</height>
+    </size>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
@@ -66,6 +84,9 @@
            <property name="inputMethodHints">
             <set>Qt::ImhDigitsOnly</set>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
            <property name="placeholderText">
             <string>Your ID Number, ex. 5601</string>
            </property>
@@ -79,6 +100,9 @@
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
            <property name="placeholderText">
             <string>Password</string>
            </property>
@@ -86,7 +110,7 @@
             <enum>Qt::VisualMoveStyle</enum>
            </property>
            <property name="clearButtonEnabled">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -105,9 +129,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>10</y>
+          <y>0</y>
           <width>261</width>
-          <height>271</height>
+          <height>281</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="layout_page1">
@@ -149,14 +173,11 @@
        <widget class="QPushButton" name="button_option_proceed">
         <property name="geometry">
          <rect>
-          <x>180</x>
-          <y>320</y>
-          <width>88</width>
+          <x>150</x>
+          <y>330</y>
+          <width>121</width>
           <height>20</height>
          </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(83, 193, 36);</string>
         </property>
         <property name="text">
          <string>Proceed</string>
@@ -260,7 +281,7 @@
           <x>10</x>
           <y>150</y>
           <width>261</width>
-          <height>181</height>
+          <height>171</height>
          </rect>
         </property>
         <property name="widgetResizable">
@@ -272,7 +293,7 @@
            <x>0</x>
            <y>0</y>
            <width>255</width>
-           <height>175</height>
+           <height>165</height>
           </rect>
          </property>
          <widget class="QListWidget" name="page_2_list_newsp">
@@ -281,7 +302,7 @@
             <x>0</x>
             <y>0</y>
             <width>256</width>
-            <height>171</height>
+            <height>161</height>
            </rect>
           </property>
          </widget>
@@ -290,14 +311,11 @@
        <widget class="QPushButton" name="button_back_from_p2s">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>13</x>
           <y>330</y>
-          <width>88</width>
+          <width>131</width>
           <height>20</height>
          </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(83, 193, 36);</string>
         </property>
         <property name="text">
          <string>Back</string>
@@ -306,9 +324,9 @@
        <widget class="QPushButton" name="sendButton_support">
         <property name="geometry">
          <rect>
-          <x>180</x>
+          <x>150</x>
           <y>330</y>
-          <width>88</width>
+          <width>121</width>
           <height>20</height>
          </rect>
         </property>
@@ -339,14 +357,11 @@
        <widget class="QPushButton" name="button_back_from_p2d">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>320</y>
-          <width>88</width>
+          <x>13</x>
+          <y>330</y>
+          <width>131</width>
           <height>20</height>
          </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(83, 193, 36);</string>
         </property>
         <property name="text">
          <string>Back</string>
@@ -399,9 +414,9 @@
        <widget class="QPushButton" name="sendButton_address">
         <property name="geometry">
          <rect>
-          <x>180</x>
-          <y>320</y>
-          <width>88</width>
+          <x>150</x>
+          <y>330</y>
+          <width>121</width>
           <height>20</height>
          </rect>
         </property>
@@ -435,7 +450,7 @@
           <x>10</x>
           <y>50</y>
           <width>251</width>
-          <height>301</height>
+          <height>271</height>
          </rect>
         </property>
         <property name="widgetResizable">
@@ -447,14 +462,26 @@
            <x>0</x>
            <y>0</y>
            <width>245</width>
-           <height>295</height>
+           <height>265</height>
           </rect>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>245</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>245</width>
+           <height>16777215</height>
+          </size>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
@@ -467,6 +494,19 @@
          </layout>
         </widget>
        </widget>
+       <widget class="QPushButton" name="report_page_finish">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>330</y>
+          <width>141</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Exit</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -477,7 +517,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>298</width>
+     <width>300</width>
      <height>25</height>
     </rect>
    </property>

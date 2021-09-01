@@ -25,6 +25,7 @@ private slots:
     void addWidgetsLists(QString, int);
     void showReport(const QString&, const QString&);
     void setSelectionStatus(int);
+    void on_report_page_finish_clicked();
 
 signals:
     void sendSelectionValues();

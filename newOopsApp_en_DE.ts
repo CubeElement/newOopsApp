@@ -4,102 +4,108 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.ui" line="58"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="301"/>
+        <location filename="mainwindow.ui" line="76"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="316"/>
         <source>Authorization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="70"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="302"/>
+        <location filename="mainwindow.ui" line="91"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="317"/>
         <source>Your ID Number, ex. 5601</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="83"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="303"/>
+        <location filename="mainwindow.ui" line="107"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="318"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="96"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="304"/>
+        <location filename="mainwindow.ui" line="120"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="319"/>
         <source>Sign in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="143"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="305"/>
+        <location filename="mainwindow.ui" line="167"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="320"/>
         <source>Your ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="162"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="306"/>
+        <location filename="mainwindow.ui" line="183"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="321"/>
         <source>Proceed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="178"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="307"/>
+        <location filename="mainwindow.ui" line="199"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="322"/>
         <source>shipping address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="188"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="308"/>
+        <location filename="mainwindow.ui" line="209"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="323"/>
         <source>support delivery</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="303"/>
-        <location filename="mainwindow.ui" line="352"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="312"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="315"/>
+        <location filename="mainwindow.ui" line="321"/>
+        <location filename="mainwindow.ui" line="367"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="327"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="330"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="316"/>
-        <location filename="mainwindow.ui" line="409"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="313"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="316"/>
+        <location filename="mainwindow.ui" line="334"/>
+        <location filename="mainwindow.ui" line="424"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="328"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="331"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="429"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="317"/>
+        <location filename="mainwindow.ui" line="444"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="332"/>
         <source>Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="211"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="309"/>
+        <location filename="mainwindow.ui" line="507"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="333"/>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="232"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="324"/>
         <source>Address delivery option</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="20"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="300"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="315"/>
         <source>newOopsApp - fluent distribution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="230"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="310"/>
+        <location filename="mainwindow.ui" line="251"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="325"/>
         <source>Enter street and house #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="248"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="311"/>
+        <location filename="mainwindow.ui" line="269"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="326"/>
         <source>Newspaper list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="336"/>
-        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="314"/>
+        <location filename="mainwindow.ui" line="354"/>
+        <location filename="Build/newOopsApp_autogen/include/ui_mainwindow.h" line="329"/>
         <source>Select where to deliver</source>
         <translation type="unfinished"></translation>
     </message>
