@@ -80,9 +80,10 @@ void DatabaseJSON::initCourierInfo(std::string StaffID)
     json subscribers = this->m_JSON["BezNummer"][this->m_courier_district];
     for (const auto &sub : subscribers)
     {
-        this->m_courier_newspapers.insert(QString::fromStdString(
-                                              sub["Obj./Aus."].get<std::string>()
-                                          ));
+        QString newspaper =  QString::fromStdString(
+                                      sub["Obj./Aus."].get<std::string>());
+        this->m_courier_newspapers.insert(newspaper);
+        this->m_courier_newspapers_all.append(newspaper);
         std::string city = sub["Ort"].get<std::string>();
         std::string street = sub["Strasse"].get<std::string>();
         std::string house = std::to_string(sub["Hausnr"].get<int>());
@@ -121,4 +122,9 @@ QStringList DatabaseJSON::getSubscriberAddresses()
         subscr_qstringlist << elem;
     }
     return subscr_qstringlist;
+}
+
+int DatabaseJSON::getNewspCount(const QString& newsp_name)
+{
+    return this->m_courier_newspapers_all.count(newsp_name);
 }

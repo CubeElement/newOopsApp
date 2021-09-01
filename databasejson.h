@@ -29,6 +29,7 @@ public:
     QString getCourierPlace();
     QSet<QString> getCourierNewspapers();
     QStringList getSubscriberAddresses();
+    int getNewspCount(const QString&);
 
 public slots:
 
@@ -41,6 +42,7 @@ private:
     std::string m_courier_address;
     QSet<QString> m_courier_newspapers;
     QSet<QString> m_subscriber_addresses;
+    QList<QString> m_courier_newspapers_all;
     bool checkResgistration(std::string, std::string);
 
 };

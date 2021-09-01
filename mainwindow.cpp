@@ -69,13 +69,15 @@ void MainWindow::addSelectorList(const QSet<QString>& units_list)
     QSetIterator<QString> it(units_list);
     while ( it.hasNext())
     {
+        QString unit_item = it.next();
         QHBoxLayout* p_layout = new QHBoxLayout();
         p_layout->setAlignment(ui->layout_page1, Qt::AlignCenter);
 
         QLabel* newsp_name = new QLabel(ui->page_1);
         QSpinBox* newsp_count = new QSpinBox(ui->page_1);
-        newsp_name->setText( it.next() );
+        newsp_name->setText( unit_item );
         newsp_count->setValue(0);
+        newsp_count->setMaximum( db.getNewspCount(unit_item) );
         QObject::connect(this, &MainWindow::sendSelectionValues,
                          this, [=]() { MainWindow::addWidgetsLists(
                                        newsp_name->text(),
