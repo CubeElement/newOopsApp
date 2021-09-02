@@ -23,7 +23,7 @@ private slots:
     void onButtonSigninClicked(QString staff_id, QString password);
     void onButtonOptionProceedClicked();
     void addWidgetsLists(QString, int);
-    void showReport(const QString*, const QString*);
+    void showReport(const QString, const QString);
     void setSelectionStatus(int);
     void on_report_page_finish_clicked();
 

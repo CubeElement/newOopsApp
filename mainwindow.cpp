@@ -155,12 +155,10 @@ void MainWindow::addWidgetsLists(QString name, int count)
     if ( ui->stackedWidget->currentIndex() == 2 && count != 0)
     {
         ui->page_2_list_newsp->addItem(name + " " + count_str + " pcs.");
-        QString* const p_name = new QString(name);
-        QString* const p_count = new QString(count_str + " pcs.");
         QObject::connect(this, &MainWindow::sendReportSingleAddr,
                          this, [=]() { MainWindow::showReport(
-                                       p_name,
-                                       p_count) ; } );
+                                       name,
+                                       count_str) ; } );
     } else if ( ui->stackedWidget->currentIndex() == 3  && count != 0)
     {
         QLabel* title = new QLabel();
@@ -174,13 +172,10 @@ void MainWindow::addWidgetsLists(QString name, int count)
             QCompleter* completer = new QCompleter(*addrlist, this);
             address->setCompleter(completer);
             ui->layout_newsp_addresses->addWidget(address);
-
-            QString* const p_title = new QString(title->text());
-            QString* const p_address = new QString(address->text());
             QObject::connect(this, &MainWindow::sendReportMultiAddr,
                              this, [=]() { MainWindow::showReport(
-                                           p_title,
-                                           p_address); } );
+                                           title->text(),
+                                           address->text()); } );
         }
     }
 }
@@ -209,14 +204,14 @@ void MainWindow::sendReport()
     ui->vlayout_report->addSpacerItem(spacer);
 }
 
-void MainWindow::showReport(const QString* name, const QString* info_value)
+void MainWindow::showReport(const QString name, const QString info_value)
 {
     QHBoxLayout* hlayout = new QHBoxLayout();
     hlayout->setSizeConstraint(QLayout::SetNoConstraint);
     QLabel* newsp = new QLabel();
     QLabel* info = new QLabel();
-    newsp->setText(*name);
-    info->setText(*info_value);
+    newsp->setText(name);
+    info->setText(info_value);
     newsp->setGeometry(50, 5, 0, 0);
     newsp->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     hlayout->addWidget(newsp);

@@ -468,8 +468,8 @@
          <rect>
           <x>10</x>
           <y>50</y>
-          <width>251</width>
-          <height>271</height>
+          <width>260</width>
+          <height>270</height>
          </rect>
         </property>
         <property name="widgetResizable">
@@ -480,8 +480,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>245</width>
-           <height>265</height>
+           <width>250</width>
+           <height>264</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -492,23 +492,19 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>245</width>
+           <width>250</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>245</width>
+           <width>250</width>
            <height>16777215</height>
           </size>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
-           <layout class="QVBoxLayout" name="vlayout_report">
-            <property name="sizeConstraint">
-             <enum>QLayout::SetMaximumSize</enum>
-            </property>
-           </layout>
+           <layout class="QVBoxLayout" name="vlayout_report"/>
           </item>
          </layout>
         </widget>
@@ -516,9 +512,9 @@
        <widget class="QPushButton" name="report_page_finish">
         <property name="geometry">
          <rect>
-          <x>70</x>
+          <x>10</x>
           <y>330</y>
-          <width>141</width>
+          <width>261</width>
           <height>21</height>
          </rect>
         </property>
