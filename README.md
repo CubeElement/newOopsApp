@@ -11,3 +11,31 @@
 
 Draft of a kind-of-blueprint/scheme:
 ![newOopsApp](https://user-images.githubusercontent.com/70653782/128698923-9eb79366-3add-4f3f-868c-4cbb882e8a13.png)
+
+
+
+## How to use
+newOopsApp uses CMake to generate a set of Makefiles for the build process. 
+
+To generate these Makefiles and build newOopsApp (on Linux), perform the following steps:
+
+```bash
+# Clone this repository
+$ git clone https://github.com/CubeElement/newOopsApp
+
+# Go into the repository
+$ cd cube-tools
+
+# Create and change to a new, empty build directory by running mkdir build, cd build: 
+$ mkdir Build
+$ cd Build/
+
+# Run cmake
+$ cmake ..
+
+# Start the build process
+$ make
+
+# Start the application
+$ ./newOopsApp
+```
